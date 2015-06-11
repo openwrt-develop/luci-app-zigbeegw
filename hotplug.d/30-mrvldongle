@@ -1,10 +1,13 @@
 #!/bin/sh
 
-MRVL_PRODID='403/6015/1000'
+MRVL_EVB_PRODID='403/6001/600'
+MRVL_DONGLE_PRODID='403/6015/1000'
 MRVL_TYPE='0/0/0'
 MRVL_IFACE='255/255/255'
 
-if [ "${PRODUCT}" = "${MRVL_PRODID}" ]; then
+logger -t DEBUG "hotplug usb: action='$ACTION' product='$PRODUCT' type='$TYPE' interface='$INTERFACE'"
+
+if [ "${PRODUCT}" = "${MRVL_EVB_PRODID}" ] || [ "${PRODUCT}" = "${MRVL_DONGLE_PRODID}" ]; then
         if [ "${INTERFACE}" = "${MRVL_IFACE}" ]; then
                 if [ "${ACTION}" = "add" ]; then
                         DEVICE_NAME=$(ls /dev/* | grep ttyUSB)
@@ -12,7 +15,7 @@ if [ "${PRODUCT}" = "${MRVL_PRODID}" ]; then
                                 logger -t Hotplug Warning DEVICE_NAME is empty
                                 exit
                         fi
-                        logger -t Hotplug Device of Marvell MZ100 Dongle is $DEVICE_NAME
+                        logger -t Hotplug Device of Marvell MZ100 is $DEVICE_NAME
                         /etc/init.d/zigbeegw restart
                 fi
                 if [ "${ACTION}" = "remove" ]; then

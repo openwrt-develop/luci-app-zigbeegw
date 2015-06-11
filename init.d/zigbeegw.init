@@ -14,9 +14,12 @@ start() {
                 stop
                 return 0
         }
-        service_start /usr/bin/zigbeegw \
-            -d "`ls /dev/ttyUSB*`" \
-            -p ${path} & sleep 1
+        usb_device="`ls /dev/ttyUSB*`"
+        [ "$usb_device" = "$device" ] && {
+            service_start /usr/bin/zigbeegw \
+                -d ${usb_device} \
+                -p ${path} & sleep 1
+        }
 }
 
 stop() {
